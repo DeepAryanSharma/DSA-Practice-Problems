@@ -1,46 +1,44 @@
-#include<iostream>
-using namespace std;
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
 
-int division(int dividend, int divisor){
-  int s=0;
-  int e=abs(dividend);
-  int mid=s+(e-s)/2;
-  int ans=0;
+        long long s=0;
+        long long e=abs(dividend);
+        long long mid=s+(e-s)/2;
+        long long ans=0;
+        while(s<=e){
+            // Handle edge cases
+            if(divisor == 0 || (dividend == INT_MIN && divisor == -1)) {
+            return INT_MAX;
+            }
+            if(abs(divisor*mid)==abs(dividend)){
+                //found the ans
+                ans= mid;
+                break;
+            }
 
-  while(s<=e){
-    if(abs(mid*divisor)==abs(dividend)){
-      ans=mid;
-      break;
+            if(abs(divisor*mid)<abs(dividend)){
+                //this is a possbile ans so store it in the ans
+                ans=mid;
+                //further search in right 
+                s=mid+1;
+            }
+            else{
+                //this is not a possible ans
+                e=mid-1;
+            }
+
+            
+            mid=s+(e-s)/2;
+        }
+        //determining the sign of the ans
+        if((dividend>0 && divisor>0) || (dividend<0 && divisor<0)){
+            return ans;
+        }
+        else{
+            return -ans;
+        }
+        
     }
 
-    if(abs(mid*divisor)<abs(dividend)){
-      //store
-      ans=mid;
-      //further search in right
-      s=mid+1;
-    }
-
-    else{
-      //search in left
-      e=mid-1;
-    }
-    //updating mid
-    mid=s+(e-s)/2;
-  }
-  //determining the sign of the quotient 
-  if((dividend<0 && divisor<0) || (dividend>0 && divisor>0)){
-    return ans;
-  }
-  else{
-    return -ans;
-  }
-}
-
-int main(){
-  int dividend=20;
-  int divisor=5;
-  
-  cout<<division(dividend, divisor);
-  
-  
-}
+};
